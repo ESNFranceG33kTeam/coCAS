@@ -1,0 +1,30 @@
+name: "\U0001F680 Feature issue"
+description: New feature
+title: "[FEAT]: "
+labels: ["feature"]
+assignees:
+  - octocat
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Module name
+      description: What would be the name of the module
+      placeholder: Buddy family
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Tell us more about it
+    validations:
+      required: true
+  - type: textarea
+    id: object
+    attributes:
+      label: Object description
+      description: In term of parameters what do you need to create one instance of
+      placeholder: Name, date, address, ...
+    validations:
+      required: false
