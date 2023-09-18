@@ -8,6 +8,7 @@ portcas: "8181"
 # Local Asso conf
 asso_id: "FR-LYON-ESN"
 extra_admin: []
+# Local conf url
 local_url: "https://raw.githubusercontent.com/ESN-CosmoCode/.github/main/cocas/galaxy.yaml"
 # Global and G33kTeam conf url
 global_url: "https://raw.githubusercontent.com/ESNFranceG33kTeam/.github/main/cocas/galaxy.yaml"

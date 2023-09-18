@@ -20,6 +20,12 @@ func (h *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if r.URL.Path == "/reload" {
+		ExternalLoadConf()
+		logger.GetLogger().LogInfo("cocas", "Reloaded conf")
+		return
+	}
+
 	esner := GetProfile(r)
 
 	w.WriteHeader(http.StatusOK)
