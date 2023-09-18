@@ -27,44 +27,16 @@ type GalaxyConf struct {
 	LocalRoles    []string `yaml:"local_roles"`
 	G33kTeam      []string `yaml:"geek_username"`
 	AssoId        string   `yaml:"asso_id"`
-	ExtraUsername []string `yaml:"extra_username"`
+	ExtraUsername []string `yaml:"extra_admin"`
 }
 
 var GalaxyUsers GalaxyConf
 
 func InitCas() {
-
 	// Conf
 	GalaxyUsers.ExtraUsername = helpers.TheAppConfig().ExtraAdmin[:]
 	GalaxyUsers.AssoId = helpers.TheAppConfig().AssoId
-
-	// Global conf
-	GalaxyUsers.GlobalConfUrl = helpers.TheAppConfig().GlobalUrl
-	global_conf, err := http.Get(GalaxyUsers.GlobalConfUrl)
-	if err != nil {
-		logger.GetLogger().LogError("cocas", "global conf url file unavailable", err)
-	}
-	defer global_conf.Body.Close()
-	decoder := yaml.NewDecoder(global_conf.Body)
-	err = decoder.Decode(&GalaxyUsers)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// Local conf
-	if helpers.TheAppConfig().LocalAsso != "" {
-		GalaxyUsers.LocalConfUrl = helpers.TheAppConfig().LocalAsso
-		local_conf, err := http.Get(GalaxyUsers.GlobalConfUrl)
-		if err != nil {
-			logger.GetLogger().LogError("cocas", "local conf url file unavailable", err)
-		}
-		defer local_conf.Body.Close()
-		decoder = yaml.NewDecoder(local_conf.Body)
-		err = decoder.Decode(&GalaxyUsers)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
+	ExternalLoadConf()
 
 	// Server init
 	cocasmwd = http.NewServeMux()
@@ -81,6 +53,36 @@ func InitCas() {
 	}
 
 	logger.GetLogger().LogInfo("cocas", "Conf up !")
+}
+
+func ExternalLoadConf() {
+	// Global conf
+	GalaxyUsers.GlobalConfUrl = helpers.TheAppConfig().GlobalUrl
+	global_conf, err := http.Get(GalaxyUsers.GlobalConfUrl)
+	if err != nil {
+		logger.GetLogger().LogError("cocas", "global conf url file unavailable", err)
+	}
+	defer global_conf.Body.Close()
+	decoder := yaml.NewDecoder(global_conf.Body)
+	err = decoder.Decode(&GalaxyUsers)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// Local conf
+	if helpers.TheAppConfig().LocalAsso != "" {
+		GalaxyUsers.LocalConfUrl = helpers.TheAppConfig().LocalAsso
+		local_conf, err := http.Get(GalaxyUsers.LocalConfUrl)
+		if err != nil {
+			logger.GetLogger().LogError("cocas", "local conf url file unavailable", err)
+		}
+		defer local_conf.Body.Close()
+		decoder = yaml.NewDecoder(local_conf.Body)
+		err = decoder.Decode(&GalaxyUsers)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 }
 
 func GetCasServer() *http.Server {
