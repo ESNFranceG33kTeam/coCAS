@@ -40,4 +40,4 @@ docker-start:
 		-v $(PWD)/test:/etc/$(PROJECT_PATH)/conf \
 		-p 8181:8181 \
 		$(PROJECT_NAME):latest \
-		-conf=/etc/$(PROJECT_PATH)/conf/conf_docker.yaml
+		-conf=/etc/$(PROJECT_PATH)/conf/conf.yaml

@@ -11,7 +11,9 @@ type Cfg struct {
 	ConfPath   string
 	PortCas    string   `yaml:"portcas"`
 	Loglevel   int      `yaml:"loglevel"`
-	G33kTeam   string   `yaml:"geekteam_url"`
+	LocalAsso  string   `yaml:"local_url"`
+	GlobalUrl  string   `yaml:"global_url"`
+	AssoId     string   `yaml:"asso_id"`
 	ExtraAdmin []string `yaml:"extra_admin"`
 }
 
@@ -19,7 +21,6 @@ var AppConfig Cfg
 
 // flags
 var Confpathflag string
-var Swaggerpathflag string
 
 func InitFile() {
 	AppConfig.ConfPath = Confpathflag

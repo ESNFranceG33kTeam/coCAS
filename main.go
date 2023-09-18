@@ -21,7 +21,7 @@ func startoptions() {
 	flag.StringVar(
 		&helpers.Confpathflag,
 		"conf",
-		filepath.Join(path, "test/conf_local.yaml"),
+		filepath.Join(path, "test/conf.yaml"),
 		"path for the configuration file.",
 	)
 
