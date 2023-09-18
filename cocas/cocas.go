@@ -19,32 +19,52 @@ type myHandler struct{}
 var MyHandler = &myHandler{}
 
 type GalaxyConf struct {
-	ConfUrl       string
+	GlobalConfUrl string
+	LocalConfUrl  string
 	CASServer     string   `yaml:"cas_server"`
 	Country       string   `yaml:"country"`
-	Roles         []string `yaml:"roles"`
-	G33kTeam      []string `yaml:"galaxy_username"`
+	GlobalRoles   []string `yaml:"global_roles"`
+	LocalRoles    []string `yaml:"local_roles"`
+	G33kTeam      []string `yaml:"geek_username"`
+	AssoId        string   `yaml:"asso_id"`
 	ExtraUsername []string `yaml:"extra_username"`
 }
 
 var GalaxyUsers GalaxyConf
 
 func InitCas() {
-	GalaxyUsers.ConfUrl = helpers.TheAppConfig().G33kTeam
 
-	// G33kTeam username
-	g33k_username, err := http.Get(GalaxyUsers.ConfUrl)
+	// Conf
+	GalaxyUsers.ExtraUsername = helpers.TheAppConfig().ExtraAdmin[:]
+	GalaxyUsers.AssoId = helpers.TheAppConfig().AssoId
+
+	// Global conf
+	GalaxyUsers.GlobalConfUrl = helpers.TheAppConfig().GlobalUrl
+	global_conf, err := http.Get(GalaxyUsers.GlobalConfUrl)
 	if err != nil {
-		logger.GetLogger().LogError("cocas", "g33kteam url file unavailable", err)
+		logger.GetLogger().LogError("cocas", "global conf url file unavailable", err)
 	}
-	defer g33k_username.Body.Close()
-	decoder := yaml.NewDecoder(g33k_username.Body)
+	defer global_conf.Body.Close()
+	decoder := yaml.NewDecoder(global_conf.Body)
 	err = decoder.Decode(&GalaxyUsers)
 	if err != nil {
 		fmt.Println(err)
 	}
-	// Extra username
-	GalaxyUsers.ExtraUsername = helpers.TheAppConfig().ExtraAdmin[:]
+
+	// Local conf
+	if helpers.TheAppConfig().LocalAsso != "" {
+		GalaxyUsers.LocalConfUrl = helpers.TheAppConfig().LocalAsso
+		local_conf, err := http.Get(GalaxyUsers.GlobalConfUrl)
+		if err != nil {
+			logger.GetLogger().LogError("cocas", "local conf url file unavailable", err)
+		}
+		defer local_conf.Body.Close()
+		decoder = yaml.NewDecoder(local_conf.Body)
+		err = decoder.Decode(&GalaxyUsers)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 
 	// Server init
 	cocasmwd = http.NewServeMux()

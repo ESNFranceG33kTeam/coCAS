@@ -64,9 +64,9 @@ Output : no output
 
 ## Permissions
 
-By default any G33kTeam member and people with IT roles on the Galaxy are grant admin permission [see here](https://github.com/ESNFranceG33kTeam/.github/blob/main/members/galaxy.yaml) for further information and details.
+By default local board member and any G33kTeam member and people with IT roles on the Galaxy are grant admin permission [see here](https://github.com/ESNFranceG33kTeam/.github/blob/main/cocas/galaxy.yaml) for further information and details.
 
-You can also add some extra peoples for admin grant by filling the variable `extra_admin` :
+You can also add some extra peoples for admin grant by filling the variable `extra_admin` or any key in an external `yaml` file and call it directly in the `local_url` parameter :
 
 ```
 # Galaxy username for Extra Admin

@@ -47,18 +47,29 @@ func GetProfile(r *http.Request) *Profile {
 	}
 
 	// Rules for Super Admin
-	for _, role := range ESNer.ExtendedRoles {
-		for _, defrole := range GalaxyUsers.Roles {
-			if role == defrole {
+	// Global Roles
+	for _, ext_role := range ESNer.ExtendedRoles {
+		for _, geek_roles := range GalaxyUsers.GlobalRoles {
+			if ext_role == geek_roles {
 				ESNer.Admin = true
 			}
 		}
 	}
+	// Local Roles
+	for _, role := range ESNer.Roles {
+		for _, local_role := range GalaxyUsers.LocalRoles {
+			if role == local_role && ESNer.Sc == GalaxyUsers.AssoId {
+				ESNer.Admin = true
+			}
+		}
+	}
+	// G33kTeam Username
 	for _, geek := range GalaxyUsers.G33kTeam {
 		if ESNer.Username == geek {
 			ESNer.Admin = true
 		}
 	}
+	// Extra Username
 	for _, extra := range GalaxyUsers.ExtraUsername {
 		if ESNer.Username == extra {
 			ESNer.Admin = true
