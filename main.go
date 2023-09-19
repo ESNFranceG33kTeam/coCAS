@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"github.com/ESNFranceG33kTeam/coCAS/cocas"
+	"github.com/ESNFranceG33kTeam/coCAS/docs"
 	"github.com/ESNFranceG33kTeam/coCAS/helpers"
 	"github.com/ESNFranceG33kTeam/coCAS/logger"
 )
@@ -35,6 +36,7 @@ func InitConf() {
 }
 
 func main() {
+	docs.DrawStart()
 	startoptions()
 	InitConf()
 	cocas.InitCas()

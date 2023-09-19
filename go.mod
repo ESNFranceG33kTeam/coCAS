@@ -29,5 +29,3 @@ replace github.com/ESNFranceG33kTeam/coCAS/helpers => ../helpers
 replace github.com/ESNFranceG33kTeam/coCAS/logger => ../logger
 
 replace github.com/ESNFranceG33kTeam/coCAS/docs => ../docs
-
-replace github.com/ESNFranceG33kTeam/coCAS/modules/health => ../health
