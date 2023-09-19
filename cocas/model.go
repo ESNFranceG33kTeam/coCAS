@@ -1,14 +1,11 @@
 package cocas
 
 import (
-	_ "embed"
 	"net/http"
 
+	"github.com/ESNFranceG33kTeam/coCAS/docs"
 	"gopkg.in/cas.v2"
 )
-
-//go:embed VERSION.txt
-var version_file string
 
 type Profile struct {
 	Username      string   `json:"username"`
@@ -94,7 +91,7 @@ func GetHealth() *Health {
 
 	hea.Title = "IT works !"
 	hea.Name = "coCAS"
-	hea.Version = string(version_file)
+	hea.Version = docs.GetVersion()
 	hea.Message = "Gocas is feeling connected today :)"
 
 	return &hea
