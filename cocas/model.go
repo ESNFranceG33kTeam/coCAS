@@ -1,12 +1,15 @@
 package cocas
 
 import (
+	_ "embed"
 	"net/http"
 
 	"gopkg.in/cas.v2"
 )
 
-// swagger:model Profile
+//go:embed VERSION.txt
+var version_file string
+
 type Profile struct {
 	Username      string   `json:"username"`
 	First         string   `json:"firstname"`
@@ -26,6 +29,13 @@ type Profile struct {
 }
 
 var ESNer Profile
+
+type Health struct {
+	Title   string `json:"title"`
+	Version string `json:"version"`
+	Name    string `json:"name"`
+	Message string `json:"message"`
+}
 
 func GetProfile(r *http.Request) *Profile {
 	ESNer = Profile{
@@ -77,4 +87,15 @@ func GetProfile(r *http.Request) *Profile {
 	}
 
 	return &ESNer
+}
+
+func GetHealth() *Health {
+	var hea Health
+
+	hea.Title = "IT works !"
+	hea.Name = "coCAS"
+	hea.Version = string(version_file)
+	hea.Message = "Gocas is feeling connected today :)"
+
+	return &hea
 }
