@@ -10,7 +10,6 @@ import (
 //go:embed VERSION.txt
 var version_file string
 
-// swagger:model Profile
 type Profile struct {
 	Username      string   `json:"username"`
 	First         string   `json:"firstname"`
