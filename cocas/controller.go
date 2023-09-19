@@ -8,6 +8,8 @@ import (
 	"gopkg.in/cas.v2"
 )
 
+var err error
+
 func (h *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json;charset=UTF-8")
 	if !cas.IsAuthenticated(r) {
@@ -20,16 +22,20 @@ func (h *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.URL.Path == "/reload" {
+	w.WriteHeader(http.StatusOK)
+
+	if r.URL.Path == "/healthcheck" {
+		err = json.NewEncoder(w).Encode(GetHealth())
+	} else if r.URL.Path == "/reload" {
 		ExternalLoadConf()
 		logger.GetLogger().LogInfo("cocas", "Reloaded conf")
-		return
+		err = json.NewEncoder(w).Encode(GalaxyUsers)
+	} else if r.URL.Path == "/conf" {
+		err = json.NewEncoder(w).Encode(GalaxyUsers)
+	} else {
+		err = json.NewEncoder(w).Encode(GetProfile(r))
 	}
 
-	esner := GetProfile(r)
-
-	w.WriteHeader(http.StatusOK)
-	err := json.NewEncoder(w).Encode(esner)
 	if err != nil {
 		logger.GetLogger().LogError("cocas", "problem with encoder.", err)
 	} else {

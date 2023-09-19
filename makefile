@@ -35,6 +35,7 @@ docker-build:
 	docker build . -f docker/Dockerfile --tag $(PROJECT_NAME):latest
 
 docker-start:
+	docker rm -f $(PROJECT_NAME) 2> /dev/null
 	docker run \
 		--name $(PROJECT_NAME) \
 		-v $(PWD)/test:/etc/$(PROJECT_PATH)/conf \
